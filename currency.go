@@ -1,10 +1,16 @@
 package currency
 
-import "strconv"
+import (
+	"errors"
+	"math"
+	"strconv"
+	"strings"
+)
 
 // Currency is a decimal with precision of two * 100.
 type Currency int
 
+// Return a formated currency to "R$ 1.000.000,00".
 func (c Currency) Format() string {
 	str := strconv.Itoa(int(c))
 	for len(str) < 3 {
@@ -30,5 +36,23 @@ func (c Currency) Format() string {
 	return string(currency)
 }
 
-// func main() {
-// }
+// Parse to currency.
+// sep is a decimal separator, must be "", "," or ".".
+func Parse(str string, sep string) (Currency, error) {
+	switch sep {
+	case ",":
+		str = strings.Replace(str, ".", "", -1)
+		str = strings.Replace(str, ",", ".", -1)
+	case ".":
+	case "":
+	default:
+		return 0, errors.New(`Invalid separator, must be "", "," or "."`)
+	}
+	str = strings.TrimSpace(str)
+	val64, err := strconv.ParseFloat(str, 64)
+	if err != nil {
+		return 0, err
+	}
+	// return int(math.Round(val64 * 100)), nil
+	return Currency(math.Round(val64 * 100)), nil
+}
