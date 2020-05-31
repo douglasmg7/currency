@@ -10,7 +10,7 @@ import (
 // Currency is a decimal with precision of two * 100.
 type Currency int
 
-// Return a formated currency to "1000000,00".
+// Return a formated currency to "1000000.00".
 func (c Currency) ToString() string {
 	str := strconv.Itoa(int(c))
 	for len(str) < 3 {
@@ -20,7 +20,7 @@ func (c Currency) ToString() string {
 	currency := []rune{}
 	for i, ch := range str {
 		if i == (strLen - 2) {
-			currency = append(currency, ',')
+			currency = append(currency, '.')
 		}
 		currency = append(currency, ch)
 	}
