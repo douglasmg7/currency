@@ -53,6 +53,11 @@ func (c Currency) Format() string {
 	return string(currency)
 }
 
+// Return a  float64 value 1000.00.
+func (c Currency) ToFloat64() float64 {
+	return float64(c) / 100
+}
+
 // Parse to currency.
 // sep is a decimal separator, must be "", "," or ".".
 func Parse(str string, sep string) (Currency, error) {
